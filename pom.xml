@@ -16,11 +16,14 @@
 
     <properties>
         <java.version>11</java.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+        <feign.version>1.4.6.RELEASE</feign.version>
         <swagger.version>2.9.2</swagger.version>
         <orika.version>1.5.4</orika.version>
         <sonar.scanner.version>3.6.0.1398</sonar.scanner.version>
         <nexus.plugin.version>1.6.8</nexus.plugin.version>
         <jacoco.plugin.version>0.8.3</jacoco.plugin.version>
+        <wiremock.version>2.22.0</wiremock.version>
 
         <sonar.exclusions>
             **/*Application.java,
@@ -42,6 +45,21 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
         </dependency>
 
         <dependency>
@@ -69,6 +87,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>${wiremock.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -80,6 +106,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>

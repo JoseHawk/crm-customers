@@ -40,14 +40,15 @@ public class CustomerControllerUnitTest {
     }
 
     @Test
-    public void createCustomerTest() {
+    public void createCustomerTest() throws NotFoundException {
         CustomerDTO customerDTO = CustomerDTO.builder()
                 .name("testName")
                 .surname("testSurname")
                 .build();
-        when(customerService.createCustomer(customerDTO)).thenReturn(customer);
+        String userId = "test@domain.com";
+        when(customerService.createCustomer(customerDTO, userId)).thenReturn(customer);
 
-        Customer actualCustomer = cut.createCustomer(customerDTO).getBody();
+        Customer actualCustomer = cut.createCustomer(customerDTO, userId).getBody();
 
         assertEquals(customer, actualCustomer);
     }
@@ -81,9 +82,10 @@ public class CustomerControllerUnitTest {
                 .surname("testSurname")
                 .build();
         UUID customerId = UUID.randomUUID();
-        when(customerService.updateCustomer(customerId, customerDTO)).thenReturn(customer);
+        String userId = "test@domain.com";
+        when(customerService.updateCustomer(customerId, customerDTO, userId)).thenReturn(customer);
 
-        Customer actualCustomer = cut.updateCustomer(customerId, customerDTO).getBody();
+        Customer actualCustomer = cut.updateCustomer(customerId, customerDTO, userId).getBody();
 
         assertEquals(customer, actualCustomer);
     }

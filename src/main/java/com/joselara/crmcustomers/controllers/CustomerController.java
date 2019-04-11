@@ -6,6 +6,7 @@ import com.joselara.crmcustomers.services.CustomerService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,29 +18,32 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("/customer")
-    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDTO customerInformation) {
-        return ResponseEntity.ok(customerService.createCustomer(customerInformation));
+    @PostMapping(path = "/customer", consumes = "application/json")
+    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDTO customerInformation,
+                                                   @RequestHeader("User-Id") String userId) throws NotFoundException {
+        return ResponseEntity.ok(customerService.createCustomer(customerInformation, userId));
     }
 
-    @GetMapping("/customer/{customerId}")
-    public ResponseEntity<Customer> getCustomerById(@RequestParam("customerId") final UUID customerId) throws NotFoundException {
+    @GetMapping(path = "/customer/{customerId}", consumes = "application/json")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable("customerId") final UUID customerId) throws NotFoundException {
         return ResponseEntity.ok(customerService.getCustomerById(customerId));
     }
 
-    @GetMapping("/customers")
+    @GetMapping(path = "/customers", consumes = "application/json")
     public ResponseEntity<List<Customer>> getAllCustomers() {
+
         return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
-    @PutMapping("/customer/{customerId}")
-    public ResponseEntity<Customer> updateCustomer(@RequestParam("customerId") final UUID customerId,
-                                                   @RequestBody CustomerDTO customerInformation) throws NotFoundException {
-        return ResponseEntity.ok(customerService.updateCustomer(customerId, customerInformation));
+    @PutMapping(path = "/customer/{customerId}", consumes = "application/json")
+    public ResponseEntity<Customer> updateCustomer(@PathVariable("customerId") final UUID customerId,
+                                                   @RequestBody CustomerDTO customerInformation,
+                                                   @RequestHeader("User-Id") String userId) throws NotFoundException {
+        return ResponseEntity.ok(customerService.updateCustomer(customerId, customerInformation, userId));
     }
 
-    @DeleteMapping("/customer/{customerId}")
-    public ResponseEntity<Void> deleteCustomer(@RequestParam("customerId") final UUID customerId) throws NotFoundException {
+    @DeleteMapping(path = "/customer/{customerId}", consumes = "application/json")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("customerId") final UUID customerId) throws NotFoundException {
         customerService.deleteCustomer(customerId);
 
         return ResponseEntity.noContent().build();

@@ -20,6 +20,7 @@ public class CustomerConverterUnitTest {
         CustomerDTO customerDTO = CustomerDTO.builder()
                 .name("testName")
                 .surname("testSurname")
+                .picturePath("testPath")
                 .build();
 
         Customer customer = cut.map(customerDTO, Customer.class);

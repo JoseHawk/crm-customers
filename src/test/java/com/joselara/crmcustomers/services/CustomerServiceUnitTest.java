@@ -43,16 +43,28 @@ public class CustomerServiceUnitTest {
     }
 
     @Test
-    public void createCustomerSuccess() {
+    public void createCustomerSuccess() throws NotFoundException {
         CustomerDTO customerDTO = CustomerDTO.builder()
                 .name("testName")
                 .surname("testSurname")
                 .build();
+        String userId = "test@domain.com";
         when(customerConverter.map(customerDTO, Customer.class)).thenReturn(customer);
 
-        Customer expectedCustomer = cut.createCustomer(customerDTO);
+        Customer expectedCustomer = cut.createCustomer(customerDTO, userId);
 
-        assertEquals(customer.getName(), expectedCustomer.getName());
+        assertEquals(expectedCustomer.getName(), customer.getName());
+        assertEquals(expectedCustomer.getCreatedBy(), userId);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void createCustomerFails() throws NotFoundException {
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .name("testName")
+                .surname("testSurname")
+                .build();
+
+         cut.createCustomer(customerDTO, null);
     }
 
     @Test
@@ -61,7 +73,7 @@ public class CustomerServiceUnitTest {
 
         Customer expectedCustomer = cut.getCustomerById(UUID.randomUUID());
 
-        assertEquals(customer.getName(), expectedCustomer.getName());
+        assertEquals(expectedCustomer.getName(), customer.getName());
     }
 
     @Test(expected = NotFoundException.class)
@@ -88,10 +100,12 @@ public class CustomerServiceUnitTest {
                 .name("newName")
                 .surname("newSurname")
                 .build();
+        String userId = "test@domain.com";
 
-        cut.updateCustomer(UUID.randomUUID(), customerInformation);
+        Customer actualCustomer = cut.updateCustomer(UUID.randomUUID(), customerInformation, userId);
 
-        assertEquals(customer.getName(), customerInformation.getName());
+        assertEquals(customerInformation.getName(), actualCustomer.getName());
+        assertEquals(userId, actualCustomer.getModifiedBy());
     }
 
     @Test

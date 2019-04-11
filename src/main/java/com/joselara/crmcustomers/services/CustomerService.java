@@ -5,6 +5,8 @@ import com.joselara.crmcustomers.models.Customer;
 import com.joselara.crmcustomers.models.dto.CustomerDTO;
 import com.joselara.crmcustomers.repositories.CustomerRepository;
 import javassist.NotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +18,28 @@ import java.util.UUID;
 @Service
 public class CustomerService {
 
+    private static final Logger LOG = LogManager.getLogger(CustomerService.class);
+
     @Autowired
     private CustomerRepository customerRepository;
 
     @Autowired
     private CustomerConverter customerConverter;
 
-    public Customer createCustomer(CustomerDTO customerInformation) {
-        Customer customer = customerConverter.map(customerInformation, Customer.class);
-        customer.setInsertTime(LocalDateTime.now());
+    public Customer createCustomer(CustomerDTO customerInformation, String userId) throws NotFoundException {
+        LOG.trace("Checking if user ID is valid");
+        if (userId == null) {
+            throw new NotFoundException("User ID not valid");
+        }
 
+        LOG.trace("Mapping customer information");
+        Customer customer = customerConverter.map(customerInformation, Customer.class);
+
+        LOG.trace("Inserting relevant customer information");
+        customer.setInsertTime(LocalDateTime.now());
+        customer.setCreatedBy(userId);
+
+        LOG.trace("Saving in database");
         customerRepository.save(customer);
 
         return customer;
@@ -45,10 +59,20 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Customer updateCustomer(UUID customerId, CustomerDTO newCustomerInformation) throws NotFoundException {
+    public Customer updateCustomer(UUID customerId, CustomerDTO newCustomerInformation, String userId) throws NotFoundException {
+        LOG.trace("Checking if user ID is valid");
+        if (userId == null) {
+            throw new NotFoundException("User ID not valid");
+        }
+
+        LOG.trace("Retrieving the customer by the ID");
         Customer customer = getCustomerById(customerId);
 
-        updateCustomerInformation(customer, newCustomerInformation);
+        LOG.trace("Updating customer information");
+        updateCustomerInformation(customer, newCustomerInformation, userId);
+
+        LOG.trace("Saving changes in customer");
+        customerRepository.save(customer);
 
         return customer;
     }
@@ -59,9 +83,11 @@ public class CustomerService {
         customerRepository.delete(customer);
     }
 
-    private void updateCustomerInformation(Customer oldCustomer, CustomerDTO newCustomer) {
+    private void updateCustomerInformation(Customer oldCustomer, CustomerDTO newCustomer, String userId) {
         oldCustomer.setName(newCustomer.getName());
         oldCustomer.setSurname(newCustomer.getSurname());
+        oldCustomer.setPicturePath(newCustomer.getPicturePath());
         oldCustomer.setModificationTime(LocalDateTime.now());
+        oldCustomer.setModifiedBy(userId);
     }
 }

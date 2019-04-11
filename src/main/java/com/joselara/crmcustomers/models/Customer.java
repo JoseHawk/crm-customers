@@ -3,6 +3,7 @@ package com.joselara.crmcustomers.models;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class Customer {
 
     @Id
-    @NotNull
+    @GeneratedValue
     private UUID customerId;
 
     @NotNull

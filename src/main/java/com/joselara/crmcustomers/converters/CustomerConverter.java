@@ -13,14 +13,9 @@ public class CustomerConverter extends ConfigurableMapper {
     protected void configure(MapperFactory factory) {
 
         factory.classMap(CustomerDTO.class, Customer.class)
-                .field("customerId", "customerId")
                 .field("name", "name")
                 .field("surname", "surname")
                 .field("picturePath", "picturePath")
-                .field("createdBy", "createdBy")
-                .field("insertTime", "insertTime")
-                .field("modifiedBy", "modifiedBy")
-                .field("modificationTime", "modificationTime")
                 .byDefault()
                 .register();
     }
