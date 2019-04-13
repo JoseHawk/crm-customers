@@ -1,6 +1,6 @@
 CREATE TABLE customer
 (
-    customer_id UUID NOT NULL PRIMARY KEY,
+    customer_id BINARY(16) NOT NULL PRIMARY KEY,
     name VARCHAR(100) NOT NULL ,
     surname VARCHAR(100) NOT NULL,
     picture_path VARCHAR(255),

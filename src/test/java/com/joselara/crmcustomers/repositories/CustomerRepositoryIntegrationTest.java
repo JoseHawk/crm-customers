@@ -5,18 +5,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class CustomerRepositoryIntegrationTest {
+@TestPropertySource(locations = "classpath:test.properties")
+@ActiveProfiles("test")public class CustomerRepositoryIntegrationTest {
 
     @Autowired
     private CustomerRepository cut;

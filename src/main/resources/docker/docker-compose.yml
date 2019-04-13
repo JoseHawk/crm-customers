@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  my-sql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: joselara
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: crmservice
+    ports:
+      - 3306:3306
