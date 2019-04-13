@@ -7,6 +7,6 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: joselara
       MYSQL_PASSWORD: password
-      MYSQL_DATABASE: crmservice
+      MYSQL_DATABASE: crmcustomers
     ports:
       - 3306:3306

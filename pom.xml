@@ -24,6 +24,8 @@
         <nexus.plugin.version>1.6.8</nexus.plugin.version>
         <jacoco.plugin.version>0.8.3</jacoco.plugin.version>
         <wiremock.version>2.22.0</wiremock.version>
+        <jasypt.version>2.0.0</jasypt.version>
+        <bouncy.castle.version>1.59</bouncy.castle.version>
 
         <sonar.exclusions>
             **/*Application.java,
@@ -110,6 +112,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>${jasypt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${bouncy.castle.version}</version>
         </dependency>
     </dependencies>
 
