@@ -2,7 +2,7 @@
 applications:
   - name: crm-customers
     buildpack: java_buildpack
-    path: target/crm-customers.0.0.1-SNAPSHOT.jar
+    path: target/crm-customers-0.0.1-SNAPSHOT.jar
     memory: 512M
     disk_quota: 256M
 services:
